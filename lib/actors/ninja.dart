@@ -13,10 +13,15 @@ class PlayerSpriteSheet {
       SimpleDirectionAnimation(idleRight: idleRight, runRight: runRight);
 }
 
-class Ninja extends SimplePlayer {
+class Ninja extends SimplePlayer with ObjectCollision {
   Ninja(Vector2 position)
       : super(
-            position: position,
-            size: Vector2(32, 32),
-            animation: PlayerSpriteSheet.simpleDirectionAnimation);
+          position: position,
+          size: Vector2(32, 32),
+          animation: PlayerSpriteSheet.simpleDirectionAnimation,
+          speed: 60,
+        ) {
+    setupCollision(CollisionConfig(
+        collisions: [CollisionArea.circle(radius: 12, align: Vector2(3, 7))]));
+  }
 }

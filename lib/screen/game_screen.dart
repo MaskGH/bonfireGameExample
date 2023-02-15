@@ -2,6 +2,8 @@ import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bonfire_first/actors/ninja.dart';
 
+final double tileSize = 32;
+
 class BonfireGameExample extends StatefulWidget {
   const BonfireGameExample({super.key});
 
@@ -14,10 +16,12 @@ class _BonfireGameExampleState extends State<BonfireGameExample> {
   Widget build(BuildContext context) {
     return BonfireWidget(
       joystick: Joystick(directional: JoystickDirectional()),
-      map: WorldMapByTiled('1.json', forceTileSize: Vector2(20, 20)),
+      map:
+          WorldMapByTiled('1.json', forceTileSize: Vector2(tileSize, tileSize)),
       player: Ninja(
         Vector2(40, 40),
       ),
+      showCollisionArea: false,
     );
   }
 }
