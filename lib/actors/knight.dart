@@ -1,4 +1,7 @@
 import 'package:bonfire/bonfire.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bonfire_first/screen/game_screen.dart';
 
 class PlayerSpriteSheet {
   static Future<SpriteAnimation> get idleRight => SpriteAnimation.load(
@@ -22,7 +25,8 @@ class PlayerSpriteSheet {
       );
 }
 
-class Knight extends SimplePlayer with ObjectCollision {
+class Knight extends SimplePlayer with ObjectCollision, Lighting {
+  bool canMove = true;
   Knight(Vector2 position)
       : super(
           position: position,
@@ -32,13 +36,25 @@ class Knight extends SimplePlayer with ObjectCollision {
         ) {
     setupCollision(CollisionConfig(
         collisions: [CollisionArea.circle(radius: 12, align: Vector2(3, 7))]));
+    // setupMoveToPositionAlongThePath(
+    //     showBarriersCalculated: true, gridSizeIsCollisionSize: true);
+    setupLighting(LightingConfig(
+        radius: tileSize * 2, color: Colors.transparent, withPulse: true));
   }
   @override
   void joystickAction(JoystickActionEvent event) {
-    if (event.event == ActionEvent.DOWN && event.id == 1) {
+    if (event.event == ActionEvent.DOWN &&
+        (event.id == 1 || event.id == LogicalKeyboardKey.space.keyId)) {
       _executeAttack();
     }
     super.joystickAction(event);
+  }
+
+  @override
+  void joystickChangeDirectional(JoystickDirectionalEvent event) {
+    if (canMove) {
+      super.joystickChangeDirectional(event);
+    }
   }
 
   void _executeAttack() {
@@ -51,7 +67,46 @@ class Knight extends SimplePlayer with ObjectCollision {
 
   @override
   void die() {
-    removeFromParent();
+    if (lastDirectionHorizontal == Direction.left) {
+      animation?.playOnce(
+        PlayerSpriteSheet.idleRight,
+        runToTheEnd: true,
+        onFinish: () {
+          removeFromParent();
+        },
+      );
+    } else {
+      animation?.playOnce(
+        PlayerSpriteSheet.idleRight,
+        runToTheEnd: true,
+        onFinish: () {
+          removeFromParent();
+        },
+      );
+    }
     super.die();
+  }
+
+  @override
+  void receiveDamage(AttackFromEnum attacker, double damage, identify) {
+    canMove = false;
+    if (lastDirectionHorizontal == Direction.left) {
+      animation?.playOnce(
+        PlayerSpriteSheet.idleRight,
+        runToTheEnd: true,
+        onFinish: () {
+          canMove = true;
+        },
+      );
+    } else {
+      animation?.playOnce(
+        PlayerSpriteSheet.idleRight,
+        runToTheEnd: true,
+        onFinish: () {
+          canMove = true;
+        },
+      );
+    }
+    super.receiveDamage(attacker, damage, identify);
   }
 }

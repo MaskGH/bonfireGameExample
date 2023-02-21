@@ -5,7 +5,7 @@
         {
          "data":[33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33,
             33, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 33,
-            33, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 33,
+            33, 1, 1, 1, 5, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 33,
             33, 1, 1, 1, 33, 33, 33, 33, 33, 33, 1, 1, 1, 33, 33, 33, 33, 1, 33, 33, 33, 33, 1, 1, 33, 1, 1, 1, 1, 33,
             33, 1, 1, 1, 1, 1, 33, 33, 1, 1, 1, 1, 1, 1, 1, 1, 33, 1, 1, 1, 1, 33, 1, 1, 33, 1, 1, 1, 1, 33,
             33, 1, 1, 1, 1, 33, 1, 1, 33, 1, 1, 1, 1, 1, 1, 1, 33, 1, 1, 1, 1, 33, 1, 1, 33, 1, 1, 1, 1, 33,
@@ -63,28 +63,6 @@
                 {
                  "class":"",
                  "height":16,
-                 "id":3,
-                 "name":"goblin",
-                 "rotation":0,
-                 "visible":true,
-                 "width":16,
-                 "x":114,
-                 "y":51.3333333333333
-                }, 
-                {
-                 "class":"",
-                 "height":16,
-                 "id":4,
-                 "name":"goblin",
-                 "rotation":0,
-                 "visible":true,
-                 "width":16,
-                 "x":66.6666666666667,
-                 "y":129.333333333333
-                }, 
-                {
-                 "class":"",
-                 "height":16,
                  "id":5,
                  "name":"goblin",
                  "rotation":0,
@@ -100,9 +78,31 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":3,
+         "name":"lamp",
+         "objects":[
+                {
+                 "class":"",
+                 "height":16,
+                 "id":26,
+                 "name":"lamp",
+                 "rotation":0,
+                 "visible":true,
+                 "width":16,
+                 "x":136,
+                 "y":72
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":3,
- "nextobjectid":6,
+ "nextlayerid":4,
+ "nextobjectid":27,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.9.2",
@@ -111,6 +111,10 @@
         {
          "firstgid":1,
          "source":"TX Tileset Grass.json"
+        }, 
+        {
+         "firstgid":65,
+         "source":"fire.json"
         }],
  "tilewidth":32,
  "type":"map",

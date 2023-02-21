@@ -21,6 +21,13 @@ class GoblinSpriteSheet {
           stepTime: 0.1,
           textureSize: Vector2(16, 16),
           texturePosition: Vector2(0, 0)));
+  static Future<SpriteAnimation> get dieRight => SpriteAnimation.load(
+      'die.png',
+      SpriteAnimationData.sequenced(
+          amount: 1,
+          stepTime: 0.1,
+          textureSize: Vector2(16, 16),
+          texturePosition: Vector2(0, 0)));
 
   static SimpleDirectionAnimation get simpleDirectionAnimation =>
       SimpleDirectionAnimation(idleRight: idleRight, runRight: runRight);
@@ -66,7 +73,23 @@ class Goblin extends SimpleEnemy with ObjectCollision {
 
   @override
   void die() {
-    removeFromParent();
+    if (lastDirectionHorizontal == Direction.left) {
+      animation?.playOnce(
+        GoblinSpriteSheet.dieRight,
+        runToTheEnd: true,
+        onFinish: () {
+          removeFromParent();
+        },
+      );
+    } else {
+      animation?.playOnce(
+        GoblinSpriteSheet.dieRight,
+        runToTheEnd: true,
+        onFinish: () {
+          removeFromParent();
+        },
+      );
+    }
     super.die();
   }
 
