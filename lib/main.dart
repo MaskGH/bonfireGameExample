@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bonfire_first/pages/home_page.dart';
 
+import 'controller/fade_page_transition.dart';
 import 'screen/game_screen.dart';
 
 void main() {
@@ -14,9 +16,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const BonfireGameExample(),
+          primarySwatch: Colors.blue,
+          pageTransitionsTheme: PageTransitionsTheme(
+              builders: {TargetPlatform.android: FadePageTransition()})),
+      home: const HomePage(),
     );
   }
 }

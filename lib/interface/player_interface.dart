@@ -53,7 +53,8 @@ class _PlayerInterFaceState extends State<PlayerInterFace> {
           const SizedBox(width: 10),
           Stack(
             children: [
-              Container(
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 100),
                 margin: const EdgeInsets.all(20),
                 width: width_current,
                 height: 20,

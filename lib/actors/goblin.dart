@@ -33,7 +33,7 @@ class GoblinSpriteSheet {
       SimpleDirectionAnimation(idleRight: idleRight, runRight: runRight);
 }
 
-class Goblin extends SimpleEnemy with ObjectCollision {
+class Goblin extends SimpleEnemy with ObjectCollision, AutomaticRandomMovement {
   bool canMove = true;
   Goblin(Vector2 position)
       : super(
@@ -50,77 +50,85 @@ class Goblin extends SimpleEnemy with ObjectCollision {
         collisions: [CollisionArea.circle(radius: 12, align: Vector2(3, 7))]));
   }
 
-  @override
-  void update(double dt) {
-    if (canMove) {
-      seeAndMoveToPlayer(
-          closePlayer: (p0) {
-            _executeAttack();
-          },
-          radiusVision: tileSize * 2,
-          margin: 4);
-    }
-    super.update(dt);
-  }
-
-  @override
-  void render(Canvas canvas) {
-    drawDefaultLifeBar(canvas,
-        borderWidth: 2, height: 2, align: const Offset(0, 5));
-
-    super.render(canvas);
-  }
-
-  @override
-  void die() {
-    if (lastDirectionHorizontal == Direction.left) {
-      animation?.playOnce(
-        GoblinSpriteSheet.dieRight,
-        runToTheEnd: true,
-        onFinish: () {
-          removeFromParent();
-        },
-      );
-    } else {
-      animation?.playOnce(
-        GoblinSpriteSheet.dieRight,
-        runToTheEnd: true,
-        onFinish: () {
-          removeFromParent();
-        },
-      );
-    }
-    super.die();
-  }
-
-  @override
-  void receiveDamage(AttackFromEnum attacker, double damage, identify) {
-    canMove = false;
-    if (lastDirectionHorizontal == Direction.left) {
-      animation?.playOnce(
-        GoblinSpriteSheet.idleRight,
-        runToTheEnd: true,
-        onFinish: () {
-          canMove = true;
-        },
-      );
-    } else {
-      animation?.playOnce(
-        GoblinSpriteSheet.idleRight,
-        runToTheEnd: true,
-        onFinish: () {
-          canMove = true;
-        },
-      );
-    }
-    super.receiveDamage(attacker, damage, identify);
-  }
-
   void _executeAttack() {
     simpleAttackMelee(
-        damage: 5,
+        damage: 10,
         size: size * 0.5,
         sizePush: 16 * 0.5,
         animationRight: PlayerSpriteSheet.attackRight);
+  }
+
+  @override
+  void update(double dt) {
+    if (canMove) {
+      seePlayer(
+          observed: (p0) {
+            seeAndMoveToPlayer(
+                closePlayer: (p0) {
+                  _executeAttack();
+                },
+                radiusVision: tileSize * 2,
+                margin: 4);
+          },
+          notObserved: () {
+            runRandomMovement(dt);
+          },
+          radiusVision: tileSize * 2);
+
+      super.update(dt);
+    }
+
+    @override
+    void render(Canvas canvas) {
+      drawDefaultLifeBar(canvas,
+          borderWidth: 2, height: 2, align: const Offset(0, 5));
+
+      super.render(canvas);
+    }
+
+    @override
+    void die() {
+      if (lastDirectionHorizontal == Direction.left) {
+        animation?.playOnce(
+          GoblinSpriteSheet.dieRight,
+          runToTheEnd: true,
+          onFinish: () {
+            removeFromParent();
+          },
+        );
+      } else {
+        animation?.playOnce(
+          GoblinSpriteSheet.dieRight,
+          runToTheEnd: true,
+          onFinish: () {
+            removeFromParent();
+          },
+        );
+      }
+      super.die();
+    }
+
+    @override
+    void receiveDamage(AttackFromEnum attacker, double damage, identify) {
+      canMove = false;
+      if (lastDirectionHorizontal == Direction.left) {
+        animation?.playOnce(
+          GoblinSpriteSheet.idleRight,
+          runToTheEnd: true,
+          onFinish: () {
+            canMove = true;
+          },
+        );
+      } else {
+        animation?.playOnce(
+          GoblinSpriteSheet.idleRight,
+          runToTheEnd: true,
+          onFinish: () {
+            canMove = true;
+          },
+        );
+      }
+      super.receiveDamage(attacker, damage, identify);
+    }
   }
 }

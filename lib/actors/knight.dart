@@ -25,12 +25,12 @@ class PlayerSpriteSheet {
       );
 }
 
-class Knight extends SimplePlayer with ObjectCollision, Lighting {
+class Knight extends SimplePlayer with ObjectCollision, Lighting, TapGesture {
   bool canMove = true;
   Knight(Vector2 position)
       : super(
           position: position,
-          size: Vector2(32, 32),
+          size: Vector2(16, 16),
           animation: PlayerSpriteSheet.simpleDirectionAnimation,
           speed: 60,
         ) {
@@ -108,5 +108,34 @@ class Knight extends SimplePlayer with ObjectCollision, Lighting {
       );
     }
     super.receiveDamage(attacker, damage, identify);
+  }
+
+  @override
+  void onTap() {
+    // TalkDialog(says: [
+    //   Say(
+    //       text: [TextSpan(text: '안녕하세요')],
+    //       person: PlayerSpriteSheet.idleRight.asWidget())
+    // ]);
+    if (FollowerWidget.isVisible('identify')) {
+      FollowerWidget.remove("identify");
+    } else {
+      FollowerWidget.show(
+          identify: 'identify',
+          context: context,
+          target: this,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+              child: Column(
+                children: [
+                  Icon(Icons.add),
+                  Text('안녕'),
+                  ElevatedButton(onPressed: () {}, child: Text('굿'))
+                ],
+              ),
+            ),
+          ));
+    }
   }
 }
